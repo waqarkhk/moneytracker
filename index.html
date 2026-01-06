@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>LewniDewni - App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --emerald: #10B981;
+            --rose: #F43F5E;
+            --bg-app: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: rgba(0, 0, 0, 0.05);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-app: #09090B;
+            --bg-card: #18181B;
+            --text-main: #FAFAFA;
+            --text-muted: #71717A;
+            --border: rgba(255, 255, 255, 0.06);
+            --nav-bg: rgba(9, 9, 11, 0.8);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-press:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        .fab-button {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            box-shadow: 0 12px 24px -8px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+
+        .modal-sheet {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        .modal-sheet.active {
+            transform: translateY(0);
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Logo Styling */
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-safe">
+
+    <!-- Header -->
+    <header class="p-8 pb-4 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <!-- Brand Logo -->
+            <div class="app-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 4V20M7 20H17M7 20L4 20" stroke="white" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18H7V4H11Z"
+                        fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2.5" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div>
+                <p id="profile-greeting" class="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.2em]">
+                    Personal Ledger</p>
+                <h1 class="text-xl font-800 tracking-tight">LewniDewni</h1>
+            </div>
+        </div>
+
+        <button onclick="toggleTheme()" class="theme-toggle btn-press shadow-sm">
+            <svg id="sun-icon" class="hidden dark:block text-emerald-500" xmlns="http://www.w3.org/2000/svg" width="20"
+                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="m17.66 17.66 1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="m6.34 17.66-1.41 1.41" />
+                <path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+            <svg id="moon-icon" class="block dark:hidden text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="20"
+                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+        </button>
+    </header>
+
+    <main class="p-6 pt-2 pb-32">
+        <!-- Dashboard Content Remains Same -->
+        <div id="home" class="tab-content active space-y-8">
+            <div class="glass-card p-8 rounded-[36px] relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-emerald-500/10 blur-[60px]"></div>
+                <div class="relative">
+                    <p class="text-[10px] font-bold opacity-40 uppercase tracking-widest mb-1">Total Balance</p>
+                    <h2 id="net-balance" class="text-4xl font-800 tracking-tighter">Rs 0</h2>
+
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="space-y-1">
+                            <p class="text-[9px] font-bold text-emerald-600 uppercase">Receivable</p>
+                            <p id="total-lene" class="text-lg font-700 tracking-tight">Rs 0</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[9px] font-bold text-rose-500 uppercase">Payable</p>
+                            <p id="total-dene" class="text-lg font-700 tracking-tight">Rs 0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex justify-between items-center px-2">
+                    <h3 class="text-[10px] font-bold opacity-40 uppercase tracking-widest">People List</h3>
+                    <button onclick="openModal('modal-person')"
+                        class="text-emerald-600 text-[10px] font-bold uppercase border border-emerald-500/20 px-4 py-2 rounded-full">+
+                        Add Contact</button>
+                </div>
+                <div id="contacts-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Transaction Log Content -->
+        <div id="history" class="tab-content space-y-6">
+            <h3 class="text-xl font-800 px-2 tracking-tight">Transaction Log</h3>
+            <div id="history-list" class="space-y-3"></div>
+        </div>
+
+        <!-- Profile Content -->
+        <div id="profile" class="tab-content space-y-6">
+            <h3 class="text-xl font-800 px-2 tracking-tight">Account</h3>
+            <div class="glass-card p-6 rounded-[32px] space-y-6">
+                <div>
+                    <label class="text-[10px] font-bold opacity-40 uppercase ml-2 tracking-widest">Display Name</label>
+                    <input type="text" id="profile-name"
+                        class="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded-2xl p-5 mt-2 outline-none focus:border-emerald-500/50 transition-all font-600"
+                        placeholder="e.g. Abdullah">
+                </div>
+                <button onclick="saveProfile()"
+                    class="w-full bg-emerald-600 text-white font-800 py-5 rounded-2xl btn-press shadow-lg shadow-emerald-500/10">Update
+                    Profile</button>
+            </div>
+            <div class="pt-12 text-center">
+                <p class="text-[10px] opacity-20 font-bold uppercase tracking-[0.3em]">All Data Stored Locally</p>
+                <button onclick="clearAllData()"
+                    class="mt-6 text-rose-500/40 text-[10px] font-bold uppercase tracking-widest hover:text-rose-500 btn-press">Erase
+                    All Records</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed bottom-0 left-0 right-0 h-24 flex items-center justify-around px-8 z-40 bg-[var(--nav-bg)] backdrop-blur-xl border-t border-[var(--border)]">
+        <button onclick="switchTab('home')" class="nav-item text-emerald-600" data-tab="home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+        </button>
+        <button onclick="openModal('modal-tx')"
+            class="fab-button w-14 h-14 rounded-[20px] flex items-center justify-center btn-press -mt-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+        <button onclick="switchTab('history')" class="nav-item text-slate-400" data-tab="history">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4" />
+            </svg>
+        </button>
+        <button onclick="switchTab('profile')" class="nav-item text-slate-400" data-tab="profile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Modals (Person/TX) same as previous -->
+    <div id="modal-person" class="modal-sheet fixed inset-0 z-[100] flex items-end">
+        <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="closeModal('modal-person')"></div>
+        <div class="relative w-full glass-card rounded-t-[40px] p-10 pt-4 border-t border-[var(--border)]">
+            <div class="w-12 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full mx-auto mb-8"></div>
+            <h3 class="text-xl font-800 mb-6">Create Contact</h3>
+            <div class="space-y-4">
+                <input type="text" id="new-name"
+                    class="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded-2xl p-5 outline-none focus:border-emerald-500/50 font-600"
+                    placeholder="Contact Name">
+                <button onclick="addPerson()"
+                    class="w-full bg-emerald-600 text-white font-800 py-5 rounded-2xl btn-press">Save Contact</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-tx" class="modal-sheet fixed inset-0 z-[100] flex items-end">
+        <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="closeModal('modal-tx')"></div>
+        <div class="relative w-full glass-card rounded-t-[40px] p-10 pt-4 border-t border-[var(--border)]">
+            <div class="w-12 h-1.5 bg-gray-200 dark:bg-white/10 rounded-full mx-auto mb-8"></div>
+            <h3 class="text-xl font-800 mb-6">New Record</h3>
+            <div class="space-y-4">
+                <div class="flex bg-black/5 dark:bg-white/5 p-1.5 rounded-2xl border border-transparent">
+                    <button id="type-lene" onclick="setTxType('lewni')"
+                        class="flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-emerald-600 text-white transition-all">Receivable</button>
+                    <button id="type-dene" onclick="setTxType('dewni')"
+                        class="flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest opacity-40 transition-all">Payable</button>
+                </div>
+                <select id="tx-person"
+                    class="w-full bg-white dark:bg-[#121214] border border-[var(--border)] rounded-2xl p-5 outline-none appearance-none font-600">
+                    <option value="">Select Person</option>
+                </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="tx-amount"
+                        class="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded-2xl p-5 outline-none font-600"
+                        placeholder="Amount">
+                    <input type="text" id="tx-note"
+                        class="w-full bg-black/5 dark:bg-white/5 border border-transparent rounded-2xl p-5 outline-none font-600"
+                        placeholder="Note">
+                </div>
+                <button onclick="addTransaction()"
+                    class="w-full bg-[#0F172A] dark:bg-white text-white dark:text-black font-800 py-5 rounded-2xl btn-press"
+                    id="submit-tx">Save Entry</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let state = {
+            people: JSON.parse(localStorage.getItem('ldp_people_v3') || '[]'),
+            transactions: JSON.parse(localStorage.getItem('ldp_tx_v3') || '[]'),
+            profile: JSON.parse(localStorage.getItem('ldp_profile_v3') || '{"name": "Waqar"}'),
+            currentTxType: 'lewni',
+            theme: localStorage.getItem('ldp_theme') || 'light'
+        };
+
+        function init() {
+            document.documentElement.setAttribute('data-theme', state.theme);
+            renderDashboard();
+            renderHistory();
+            updateProfileUI();
+            populateSelect();
+            updateThemeIcons();
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', state.theme);
+            localStorage.setItem('ldp_theme', state.theme);
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const moon = document.getElementById('moon-icon');
+            const sun = document.getElementById('sun-icon');
+            if (state.theme === 'dark') { moon.classList.add('hidden'); sun.classList.remove('hidden'); }
+            else { moon.classList.remove('hidden'); sun.classList.add('hidden'); }
+        }
+
+        function saveState() {
+            localStorage.setItem('ldp_people_v3', JSON.stringify(state.people));
+            localStorage.setItem('ldp_tx_v3', JSON.stringify(state.transactions));
+            localStorage.setItem('ldp_profile_v3', JSON.stringify(state.profile));
+            init();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.className = n.dataset.tab === tabId ? 'nav-item text-emerald-600' : 'nav-item text-slate-400';
+            });
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function addPerson() {
+            const name = document.getElementById('new-name').value;
+            if (!name) return;
+            state.people.push({ id: Date.now(), name });
+            document.getElementById('new-name').value = '';
+            closeModal('modal-person');
+            saveState();
+        }
+
+        function setTxType(type) {
+            state.currentTxType = type;
+            const btnLene = document.getElementById('type-lene');
+            const btnDene = document.getElementById('type-dene');
+            if (type === 'lene') {
+                btnLene.className = "flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-emerald-600 text-white";
+                btnDene.className = "flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest opacity-40";
+            } else {
+                btnDene.className = "flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-rose-500 text-white";
+                btnLene.className = "flex-1 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest opacity-40";
+            }
+        }
+
+        function addTransaction() {
+            const personId = document.getElementById('tx-person').value;
+            const amount = parseFloat(document.getElementById('tx-amount').value);
+            const note = document.getElementById('tx-note').value;
+            if (!personId || !amount) return;
+            state.transactions.unshift({
+                id: Date.now(), personId: parseInt(personId), amount, type: state.currentTxType, note,
+                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+            });
+            document.getElementById('tx-amount').value = '';
+            document.getElementById('tx-note').value = '';
+            closeModal('modal-tx');
+            saveState();
+        }
+
+        function deleteTx(id) {
+            if (confirm("Delete this record?")) {
+                state.transactions = state.transactions.filter(t => t.id !== id);
+                saveState();
+            }
+        }
+
+        function renderDashboard() {
+            const lene = state.transactions.filter(t => t.type === 'lene').reduce((s, t) => s + t.amount, 0);
+            const dene = state.transactions.filter(t => t.type === 'dene').reduce((s, t) => s + t.amount, 0);
+            document.getElementById('net-balance').innerText = `Rs ${(lene - dene).toLocaleString()}`;
+            document.getElementById('total-lene').innerText = `Rs ${lene.toLocaleString()}`;
+            document.getElementById('total-dene').innerText = `Rs ${dene.toLocaleString()}`;
+            const list = document.getElementById('contacts-list');
+            list.innerHTML = state.people.length ? state.people.map(p => {
+                const bal = state.transactions.filter(t => t.personId === p.id).reduce((s, t) => t.type === 'lene' ? s + t.amount : s - t.amount, 0);
+                return `
+                    <div class="glass-card p-5 rounded-[24px] flex items-center justify-between border-none">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-emerald-500/10 rounded-[16px] flex items-center justify-center font-bold text-emerald-600">${p.name[0]}</div>
+                            <div>
+                                <p class="font-bold text-sm tracking-tight">${p.name}</p>
+                                <p class="text-[10px] font-bold ${bal >= 0 ? 'text-emerald-600' : 'text-rose-500'}">${bal >= 0 ? 'Receivable' : 'Payable'} Rs ${Math.abs(bal).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('') : `<p class="text-center text-[10px] opacity-20 uppercase py-10 tracking-widest">No Contacts Found</p>`;
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = state.transactions.length ? state.transactions.map(t => {
+                const person = state.people.find(p => p.id === t.personId);
+                return `
+                    <div class="glass-card p-5 rounded-[24px] flex items-center justify-between">
+                        <div>
+                            <p class="text-[8px] font-bold opacity-30 uppercase tracking-[0.2em] mb-1">${t.date}</p>
+                            <p class="font-bold text-sm">${person ? person.name : 'Unknown'}</p>
+                            <p class="text-[10px] opacity-40 font-500">${t.note || '-'}</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <p class="font-800 text-sm ${t.type === 'lene' ? 'text-emerald-600' : 'text-rose-500'}">${t.type === 'lene' ? '+' : '-'} ${t.amount.toLocaleString()}</p>
+                            <button onclick="deleteTx(${t.id})" class="text-slate-200 hover:text-rose-500 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                        </div>
+                    </div>`;
+            }).join('') : `<p class="text-center text-[10px] opacity-20 uppercase py-10 tracking-widest">No Logs Found</p>`;
+        }
+
+        function populateSelect() {
+            const sel = document.getElementById('tx-person');
+            sel.innerHTML = '<option value="">Select Person</option>' + state.people.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function updateProfileUI() {
+            document.getElementById('profile-name').value = state.profile.name;
+            document.getElementById('profile-greeting').innerText = `${state.profile.name}'s Ledger`;
+        }
+
+        function saveProfile() {
+            state.profile.name = document.getElementById('profile-name').value || 'User';
+            saveState(); switchTab('home');
+        }
+
+        function clearAllData() {
+            if (confirm("Erase all records?")) { localStorage.clear(); window.location.reload(); }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
